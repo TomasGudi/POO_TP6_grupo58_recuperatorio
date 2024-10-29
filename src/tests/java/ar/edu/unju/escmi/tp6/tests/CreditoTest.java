@@ -21,7 +21,7 @@ class CreditoTest {
     	Cliente cliente = new Cliente(45111222, "Mario Barca", "Alvear 120", "65454686");
     	Producto producto = new Producto(1111, "Aire Acondicionado Split On/Off 2750W FC Hisense", 220000, "Argentina");
     	List<Detalle> detalles = new ArrayList<Detalle>();
- 
+    	
     	Factura factura = new Factura(LocalDate.now(), 1234, cliente, detalles );
     	TarjetaCredito tarjeta = new TarjetaCredito(1234, LocalDate.now(), cliente, 123);
     	credito = new Credito();
