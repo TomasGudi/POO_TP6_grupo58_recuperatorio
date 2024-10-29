@@ -2,6 +2,7 @@ package ar.edu.unju.escmi.tp6.main;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -27,7 +28,9 @@ public class Main {
 			
 			long dniCliente, codProducto, nroTC;
 			int opcion = 0;
+			
 			do {
+				try {
 				System.out.println("\n===== Menu Principal =====");
 				System.out.println("1- Realizar una venta");
 				System.out.println("2- Revisar compras realizadas por el cliente (debe ingresar el DNI del cliente)");
@@ -50,11 +53,16 @@ public class Main {
 			 			List<Detalle> detalles = new ArrayList<Detalle>();
 			 			List<Cuota> cuotas = new ArrayList<Cuota>();
 			 			do {
-			 				System.out.print("Ingrese el codigo del producto: "); 
+			 				List<Producto> productos = CollectionProducto.productos;
+			 				for(Producto producto : productos) {
+			 					producto.mostrarProducto();
+			 				}
+			 				System.out.println();
+			 				System.out.print("Ingrese el codigo del producto que desea comprar: "); 
 			 				codProducto = scanner.nextLong(); 
 				 			Producto aux2 = CollectionProducto.buscarProducto(codProducto);
 				 			if (aux2 != null) {
-				 				System.out.print("Cuantos de este producto desea comprar?");
+				 				System.out.println("Cuantos de este producto desea comprar?");
 				 				int cantidad = scanner.nextInt(); 
 				 				double importe = aux2.getPrecioUnitario(); 
 				 				Detalle det = new Detalle(cantidad,importe,aux2);
@@ -62,29 +70,34 @@ public class Main {
 				 				Stock aux3 = CollectionStock.buscarStock(aux2);
 				 				CollectionStock.reducirStock(aux3, cantidad);
 				 				
-				 				System.out.println("Cuanto desea abonar");
+				 				System.out.println("Cuanto desea abonar?");
 					 			double monto = scanner.nextDouble();
+					 			
 					 			int numc = 1000 + random.nextInt(9000);
-					 			Cuota cuota = new Cuota(monto,numc,LocalDate.now(),LocalDate.now().plusMonths(1));
+					 			Cuota cuota = new Cuota(monto, numc, LocalDate.now(), LocalDate.now().plusMonths(1));
 					 			cuotas.add(cuota);
 				 			} else {
 				 				System.out.println("Producto: " + codProducto + " no encontrado.");
+				 				scanner.nextLine();
+								scanner.nextLine();
 				 			}
 				 			
-				 			System.out.print("Desea continuar comprando?");
-				 			System.out.print("Ingrese 0 para terminar su compra");
+				 			System.out.println("Desea continuar comprando?");
+				 			System.out.println("Ingrese 0 para terminar su compra");
 			 				int fin = scanner.nextInt();
 				 			if(fin == 0) {
 				 				flag = true;
 				 			}
 			 			} while (!flag);
 			 	        long numt = 10000 + random.nextLong(90000);
-			 			Factura compra = new Factura(LocalDate.now(),numt,aux.getCliente(),detalles);
+			 			Factura compra = new Factura(LocalDate.now(), numt, aux.getCliente(), detalles);
 			 			CollectionFactura.agregarFactura(compra);
 			 			Credito credito = new Credito(aux,compra,cuotas);
 			 			CollectionCredito.agregarCredito(credito);
 			 		} else {
-						System.out.println("Cliente con la Tarjeta" + nroTC + "no encontrado.");
+						System.out.println("Cliente con la Tarjeta " + nroTC + " no encontrado.");
+						scanner.nextLine();
+						scanner.nextLine();
 					}
 					break;
 				case 2:
@@ -93,28 +106,34 @@ public class Main {
 					Cliente aux1 = CollectionCliente.buscarCliente(dniCliente);
 					if (aux1 != null) {
 						List<Factura> compras = aux1.consultarCompras();
-						if (compras != null && !compras.isEmpty()) {
+						if (compras.isEmpty()) {
+							System.out.println("El cliente no tiene compras registradas.");
+							scanner.nextLine();
+							scanner.nextLine();
+						} else {
 							System.out.println("Compras realizadas por " + aux1.getNombre() + ":");
 							for (Factura factura : compras) {
-								System.out.println(factura);
+								System.out.println(factura);	
 							}
-						} else {
-							System.out.println("El cliente no tiene compras registradas.");
 						}
 					} else {
 						System.out.println("Cliente con DNI " + dniCliente + " no encontrado.");
-					}
+						scanner.nextLine();
+						scanner.nextLine();
+					}					
 					break;
 				case 3:
-					for (Stock st : CollectionStock.stocks) {
-						if(st.getCantidad() > 0) {
-							System.out.println(st.getProducto());
+					System.out.println("\nElectrodomesticos: ");
+					List<Producto> productos = CollectionProducto.productos;
+					for(Producto producto : productos) {
+						if(!producto.getDescripcion().contains("Celular")) { 
+							producto.mostrarProducto();
 						}
 					}
 					break;
 				case 4:
 					for (Stock st : CollectionStock.stocks) {
-						System.out.println("Producto: " + st.getProducto().getDescripcion() + "Stock: " + st.getCantidad());
+						System.out.println("Producto: " + st.getProducto().getDescripcion() + " - Stock: " + st.getCantidad());
 					}
 					break;
 				case 5:
@@ -129,7 +148,10 @@ public class Main {
 						}
 					} else {
 						System.out.println("Cliente con DNI " + dniCliente + " no encontrado.");
+						scanner.nextLine();
+						scanner.nextLine();
 					}
+					break;
 				case 6:
 					 System.out.println("Saliendo del sistema..."); 
 					 break; 
@@ -137,8 +159,12 @@ public class Main {
 					 System.out.println("Opción no válida, por favor seleccione nuevamente.");
 					 break;
 				}
-
-			} while (opcion != 6);
+			} catch (InputMismatchException e) {
+                System.out.println("Error: Se debe ingresar un numero valido.");
+                scanner.next();
+            }
+			
+			}while (opcion != 6);
 			scanner.close();
-	}
+		}
 }

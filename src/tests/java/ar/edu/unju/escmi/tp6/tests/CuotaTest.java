@@ -13,24 +13,18 @@ import ar.edu.unju.escmi.tp6.dominio.*;
 class CuotaTest {
 	
 	 	private Credito credito;
-		private Factura factura;
-		private TarjetaCredito tarjeta;
 		
 	 	@BeforeEach
 	    public void setUp() {
-	 		Cliente cliente = new Cliente(45111222, "Mario Barca", "Alvear 120", "65454686");
-	        Producto producto = new Producto(1111, "Aire Acondicionado Split On/Off 2750W FC Hisense", 220000, "Argentina");
-	        List<Detalle> detalles = new ArrayList<Detalle>();
-	        detalles.add(new Detalle(12,10000,producto));
-
-	        this.factura = new Factura(LocalDate.now(), 1234, cliente, detalles);
-	        this.tarjeta = new TarjetaCredito(1234, LocalDate.now(), cliente, (long)1200);
-
-	        List<Cuota> cuotas = new ArrayList<Cuota>();
-	        cuotas.add(new Cuota(9000, 5678, LocalDate.now(), LocalDate.now().plusMonths(1)));
-
-	        this.credito = new Credito(this.tarjeta, this.factura, cuotas);
-	        this.credito.generarCuotas();
+	 		List<Detalle> detalles = new ArrayList<>();
+	        Detalle detalle = new Detalle();
+	        detalle.setImporte(250000.00);  
+	        detalles.add(detalle);
+	        Factura factura = new Factura();
+	        factura.setDetalles(detalles);
+	        credito = new Credito();
+	        credito.setFactura(factura);
+	        credito.generarCuotas();
 	    }
 
 	    @Test
