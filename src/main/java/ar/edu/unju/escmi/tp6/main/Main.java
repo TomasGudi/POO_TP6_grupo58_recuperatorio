@@ -24,10 +24,11 @@ public class Main {
 			CollectionCliente.precargarClientes();
 			CollectionProducto.precargarProductos();
 			CollectionStock.precargarStocks();
+			
 			long dniCliente, codProducto, nroTC;
 			int opcion = 0;
 			do {
-				System.out.println("\n====== Menu Principal =====");
+				System.out.println("\n===== Menu Principal =====");
 				System.out.println("1- Realizar una venta");
 				System.out.println("2- Revisar compras realizadas por el cliente (debe ingresar el DNI del cliente)");
 				System.out.println("3- Mostrar lista de los electrodomésticos");
@@ -139,6 +140,5 @@ public class Main {
 
 			} while (opcion != 6);
 			scanner.close();
-
 	}
 }
