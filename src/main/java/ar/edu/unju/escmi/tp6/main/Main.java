@@ -141,15 +141,19 @@ public class Main {
 					dniCliente = scanner.nextLong();
 					Cliente aux4 = CollectionCliente.buscarCliente(dniCliente);
 					if (aux4 != null) {
-						for (Credito cre : CollectionCredito.creditos) {
-							if(cre.getTarjetaCredito().getCliente().getDni() == dniCliente) {
-								System.out.println(cre);
+						if(CollectionCredito.creditos.isEmpty()) {
+							System.out.println("El cliente no posee creditos.");
+							scanner.nextLine();
+							scanner.nextLine();
+						}else {
+							for (Credito cre : CollectionCredito.creditos) {
+								if(cre.getTarjetaCredito().getCliente().getDni() == dniCliente) {
+									System.out.println(cre);
+								}
 							}
-						}
-					} else {
+						}	 
+					}else {
 						System.out.println("Cliente con DNI " + dniCliente + " no encontrado.");
-						scanner.nextLine();
-						scanner.nextLine();
 					}
 					break;
 				case 6:
