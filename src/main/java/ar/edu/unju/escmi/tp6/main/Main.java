@@ -56,7 +56,8 @@ public class Main {
 			 			do {
 			 				List<Producto> productos = CollectionProducto.productos;
 			 				for(Producto producto : productos) {
-			 					producto.mostrarProducto();
+			 					System.out.println("\nCodigo: " + producto.getCodigo());
+			 			    	System.out.println("Descripcion: " + producto.getDescripcion());
 			 				}
 			 				System.out.println();
 			 				System.out.print("Ingrese el codigo del producto que desea comprar: "); 
@@ -137,7 +138,8 @@ public class Main {
 					List<Producto> productos = CollectionProducto.productos;
 					for(Producto producto : productos) {
 						if(!producto.getDescripcion().contains("Celular")) { 
-							producto.mostrarProducto();
+							System.out.println("\nCodigo: " + producto.getCodigo());
+		 			    	System.out.println("Descripcion: " + producto.getDescripcion());
 						}
 					}
 					break;
