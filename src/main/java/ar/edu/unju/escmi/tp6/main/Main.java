@@ -68,21 +68,21 @@ public class Main {
 				 				Stock aux3 = CollectionStock.buscarStock(aux2);
 				 				if (cantidad <= aux3.getCantidad()) {	
 				 					double monto = aux2.getPrecioUnitario() * cantidad;
-				 					if(monto > aux.getLimiteCompra() && monto < 1500000) {
+				 					if(monto > aux.getLimiteCompra() || monto > 1500000) {
 				 						System.out.println("La Compra del producto: " + aux2.getDescripcion() + " supera el limite permitido: ");
 						 				scanner.nextLine();
 				 					} else { 
-					 					if(aux2.getDescripcion().contains("Celular") && monto < 800000) {
-					 					Detalle det = new Detalle(cantidad,aux2.getPrecioUnitario(),aux2);
-					 					detalles.add(det);
-					 					CollectionStock.reducirStock(aux3, cantidad);
-					 					aux.setLimiteCompra(aux.getLimiteCompra() - monto);
-				 						int numc = 1000 + random.nextInt(9000);
-				 						Cuota cuota = new Cuota(monto, numc, LocalDate.now(), LocalDate.now().plusMonths(1));
-				 						cuotas.add(cuota);
-					 					} else {
+					 					if(aux2.getDescripcion().contains("Celular") && monto > 800000) {
 					 						System.out.println("La Compra del producto: " + aux2.getDescripcion() + " supera el limite permitido: ");
 							 				scanner.nextLine();
+					 					} else {
+							 				Detalle det = new Detalle(cantidad,aux2.getPrecioUnitario(),aux2);
+						 					detalles.add(det);
+						 					CollectionStock.reducirStock(aux3, cantidad);
+						 					aux.setLimiteCompra(aux.getLimiteCompra() - monto);
+					 						int numc = 1000 + random.nextInt(9000);
+					 						Cuota cuota = new Cuota(monto, numc, LocalDate.now(), LocalDate.now().plusMonths(1));
+					 						cuotas.add(cuota);
 					 					}
 					 				}
 				 			} else {
